@@ -1,0 +1,30 @@
+﻿<Window x:Class="Northwind.Gui.Desktop.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Northwind.Gui.Desktop"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <DockPanel>
+            <Menu DockPanel.Dock="Top" Background="#FFD0E8FF">
+                <MenuItem Header="Filer" />
+                <MenuItem Header="Om" />
+            </Menu>
+            <StatusBar DockPanel.Dock="Bottom" Background="#FFD0E8FF">
+                <TextBlock Text="Klar" />
+            </StatusBar>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="4*" />
+                </Grid.ColumnDefinitions>
+                <UserControl Grid.Column="0"
+                             x:Name="masterUserControl" />
+                <UserControl Grid.Column="1"
+                             x:Name="detailsuserControl" />
+            </Grid>
+        </DockPanel>
+    </Grid>
+</Window>
