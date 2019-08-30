@@ -27,19 +27,27 @@ namespace Northwind.Gui.Desktop
         {
             InitializeComponent();
             DisplayAllEmployees();
+            PopulateComboBoxes();
             DataContext = this;
         }
         public void DisplayAllEmployees()
         {
             employeeDataGrid.ItemsSource = new Repository().GetAllEmployees();
         }
-
+        public void PopulateComboBoxes()
+        {
+            List<Employee> employees = new Repository().GetAllEmployees();
+            foreach (var id in employees.Select(employee => employee.EmployeeID).ToList())
+            {
+                comboBoxReportsTo.Items.Add(id);
+            }
+        }
         private void ButtonUpdate_Click(object sender, RoutedEventArgs e)
         {
             selectedEmployee.FirstName = textBoxFirstName.Text;
             selectedEmployee.LastName = textBoxLastName.Text;
             selectedEmployee.Title = textBoxTitle.Text;
-            selectedEmployee.TitleOfCourtesy = textBoxTitleOfCourtesy.Text;
+            selectedEmployee.TitleOfCourtesy = comboBoxTitleOfCourtesy.Text;
             selectedEmployee.BirthDate = DateTime.Parse(datePickerBirthDate.Text);
             selectedEmployee.HireDate = DateTime.Parse(datePickerHireDate.Text);
             selectedEmployee.Address = textBoxAddress.Text;
@@ -51,12 +59,29 @@ namespace Northwind.Gui.Desktop
             selectedEmployee.Extension = textBoxExtension.Text;
             selectedEmployee.Photo = Encoding.ASCII.GetBytes(textBoxPhoto.Text);
             selectedEmployee.Notes = textBoxNotes.Text;
-            selectedEmployee.ReportsTo = int.Parse(textBoxReportsTo.Text);
+            selectedEmployee.ReportsTo = int.Parse(comboBoxReportsTo.Text);
             selectedEmployee.PhotoPath = textBoxPhotoPath.Text;
             new Repository().Update(selectedEmployee);
+            textBoxFirstName.Text = string.Empty;
+            textBoxLastName.Text = string.Empty;
+            textBoxTitle.Text = string.Empty;
+            comboBoxTitleOfCourtesy.SelectedValue = string.Empty;
+            datePickerBirthDate.Text = string.Empty;
+            datePickerHireDate.Text = string.Empty;
+            textBoxAddress.Text = string.Empty;
+            textBoxCity.Text = string.Empty;
+            textBoxRegion.Text = string.Empty;
+            textBoxPostalCode.Text = string.Empty;
+            textBoxCountry.Text = string.Empty;
+            textBoxHomePhone.Text = string.Empty;
+            textBoxExtension.Text = string.Empty;
+            textBoxPhoto.Text = string.Empty;
+            textBoxNotes.Text = string.Empty;
+            comboBoxReportsTo.Text = string.Empty;
+            textBoxPhotoPath.Text = string.Empty;
+            buttonUpdate.IsEnabled = false;
             DisplayAllEmployees();
         }
-
         private void EmployeeDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             selectedEmployee = employeeDataGrid.SelectedItem as Employee;
@@ -65,7 +90,7 @@ namespace Northwind.Gui.Desktop
                 textBoxFirstName.Text = selectedEmployee.FirstName;
                 textBoxLastName.Text = selectedEmployee.LastName;
                 textBoxTitle.Text = selectedEmployee.Title;
-                textBoxTitleOfCourtesy.Text = selectedEmployee.TitleOfCourtesy;
+                comboBoxTitleOfCourtesy.Text = selectedEmployee.TitleOfCourtesy;
                 datePickerBirthDate.Text = selectedEmployee.BirthDate.ToString();
                 datePickerHireDate.Text = selectedEmployee.HireDate.ToString();
                 textBoxAddress.Text = selectedEmployee.Address;
@@ -77,8 +102,9 @@ namespace Northwind.Gui.Desktop
                 textBoxExtension.Text = selectedEmployee.Extension;
                 textBoxPhoto.Text = selectedEmployee.Photo.ToString();
                 textBoxNotes.Text = selectedEmployee.Notes;
-                textBoxReportsTo.Text = selectedEmployee.ReportsTo.ToString();
+                comboBoxReportsTo.Text = selectedEmployee.ReportsTo.ToString();
                 textBoxPhotoPath.Text = selectedEmployee.PhotoPath;
+                buttonUpdate.IsEnabled = true;
             }
         }
     }
